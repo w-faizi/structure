@@ -5,158 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prompt Structurer</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #000000;
-            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px);
+            background: #000;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1.5px, transparent 1.5px);
             background-size: 30px 30px;
             background-position: 0 0;
-            color: #ffffff;
+            color: #fff;
             line-height: 1.5;
             min-height: 100vh;
+            position: relative;
             padding: 0;
         }
-
-        /* Header */
         .header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #2a2a2a;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .logo-svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .social-links {
-            display: none;
-        }
-
-        .twitter-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .twitter-link:hover {
-            color: #1da1f2;
-            border-color: rgba(29, 161, 242, 0.3);
-            background: rgba(29, 161, 242, 0.1);
-        }
-
-        .twitter-icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Main Content */
-        .main-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            padding-top: 5rem; /* Account for fixed header */
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .input-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
+        .logo { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .logo-icon { width: 40px; height: 40px; background: #2a2a2a; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;}
+        .logo-svg { width: 24px; height: 24px;}
+        .main-content { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; padding-top: 5rem;}
+        .container { width: 100%; max-width: 450px; display: flex; flex-direction: column; gap: 1.5rem;}
+        .input-section { display: flex; flex-direction: column; gap: 1rem;}
+        .input-wrapper { position: relative;}
         textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            font-size: 15px;
-            font-family: inherit;
-            line-height: 1.5;
-            resize: vertical;
-            transition: all 0.2s ease;
-            background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
+            width: 100%; min-height: 120px; padding: 1rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 6px; font-size: 15px; font-family: inherit;
+            line-height: 1.5; resize: vertical; transition: all 0.2s;
+            background: rgba(255,255,255,0.05); color: #fff;
             backdrop-filter: blur(10px);
+            scrollbar-width: none; -ms-overflow-style: none;
         }
-
+        textarea::-webkit-scrollbar { display: none; }
         textarea:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.08);
         }
-
-        textarea::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-            font-style: italic;
-        }
-
-        .button-wrapper {
-            display: flex;
-            justify-content: center;
-        }
-
+        textarea::placeholder { color: rgba(255,255,255,0.5); font-style: italic; }
+        .button-wrapper { display: flex; justify-content: center;}
         button {
-            background: rgba(255, 255, 255, 0.9);
-            color: #000000;
+            background: rgba(255,255,255,0.9);
+            color: #000;
             border: none;
             padding: 0.75rem 2rem;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 15px; font-weight: 500;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -164,124 +67,82 @@
             min-width: 140px;
             backdrop-filter: blur(10px);
         }
-
-        button:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 1);
-            transform: translateY(-1px);
+        button.copy-btn {
+            min-width: 85px;
+            margin-left: auto;
+            margin-top: 8px;
+            padding: 0.5rem 1.3rem;
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba(255,255,255,0.18);
+            color: #f3f3f3;
+            border: 1.2px solid rgba(255,255,255,0.15);
+            border-radius: 5px;
+            position: relative; top: 2px;
         }
-
-        button:active {
-            transform: translateY(0);
+        button.copy-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.3);
+            color: #111;
         }
-
         button:disabled {
-            background: rgba(255, 255, 255, 0.3);
-            color: rgba(0, 0, 0, 0.5);
-            cursor: not-allowed;
-            transform: none;
+            background: rgba(255,255,255,0.3); color: rgba(0,0,0,0.4);
+            cursor: not-allowed; transform: none;
         }
-
-        .output-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .output-section.show {
-            display: block;
-        }
-
+        .output-section { display: none; animation: fadeIn 0.3s ease;}
+        .output-section.show { display: block;}
         .output-wrapper {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.19);
             border-radius: 6px;
-            padding: 1rem;
+            padding: 1.3rem;
             min-height: 120px;
+            font-family: 'Inter','Segoe UI','Roboto','Arial',sans-serif;
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1.65;
+            color: #ededed;
             white-space: pre-wrap;
             word-wrap: break-word;
             backdrop-filter: blur(10px);
-            color: #ffffff;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-y: auto;
+            max-height: 70vh;
         }
-
+        .output-wrapper::-webkit-scrollbar { display: none; }
+        .copy-wrapper { display: flex; flex-direction: row; justify-content: flex-end; margin-top: 0.25rem;}
         .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-style: italic;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            color: rgba(255,255,255,0.7); font-style: italic;
         }
-
         .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-top: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top: 2px solid rgba(255,255,255,0.7);
+            border-radius: 50%; animation: spin 1s linear infinite;
         }
-
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
         }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity:0; transform: translateY(10px);}
+            to { opacity:1; transform: none;}
         }
-
         @media (max-width: 768px) {
-            .header {
-                padding: 0.75rem 1rem;
-            }
-            
-            .logo {
-                font-size: 18px;
-                gap: 0.5rem;
-            }
-            
-            .logo-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
-            }
-            
-            .twitter-link {
-                font-size: 13px;
-                padding: 0.375rem 0.5rem;
-            }
-            
-            .main-content {
-                padding: 1rem;
-                padding-top: 4rem;
-            }
-            
-            .container {
-                gap: 1.25rem;
-            }
-            
-            textarea {
-                min-height: 100px;
-                padding: 0.875rem;
-                font-size: 15px;
-            }
-            
-            button {
-                padding: 0.75rem 1.5rem;
-                font-size: 15px;
-            }
+            .header { padding: 0.75rem 1rem;}
+            .logo-icon { width: 36px; height: 36px; border-radius: 10px;}
+            .main-content { padding: 1rem; padding-top: 4rem;}
+            .container { gap: 1.25rem;}
+            textarea { min-height: 100px; padding: 0.875rem; font-size: 15px;}
+            button { padding: 0.75rem 1.5rem; font-size: 15px;}
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <a href="#" class="logo">
             <div class="logo-icon">
                 <svg class="logo-svg" viewBox="0 0 24 24" fill="none">
-                    <!-- Circular arrangement of dots -->
                     <circle cx="12" cy="3" r="1.5" fill="white"/>
                     <circle cx="16.5" cy="4.5" r="1.5" fill="white"/>
                     <circle cx="19.5" cy="7.5" r="1.5" fill="white"/>
@@ -298,44 +159,43 @@
             </div>
         </a>
     </div>
-
-    <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-        <div class="input-section">
-            <div class="input-wrapper">
-                <textarea 
-                    id="promptInput" 
-                    placeholder="Paste your prompt here"
-                    spellcheck="false"
-                ></textarea>
+            <div class="input-section">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="promptInput" 
+                        placeholder="Paste your prompt here"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+                <div class="button-wrapper">
+                    <button id="structureBtn" onclick="structurePrompt()">
+                        Structure Prompt
+                    </button>
+                </div>
             </div>
-            <div class="button-wrapper">
-                <button id="structureBtn" onclick="structurePrompt()">
-                    Structure Prompt
-                </button>
+            <div class="output-section" id="outputSection">
+                <div class="output-wrapper" id="outputContent"></div>
+                <div class="copy-wrapper">
+                    <button class="copy-btn" id="copyBtn" onclick="copyPromptToClipboard()" style="display:none;">Copy</button>
+                </div>
             </div>
-        </div>
-
-        <div class="output-section" id="outputSection">
-            <div class="output-wrapper" id="outputContent"></div>
         </div>
     </div>
-</div>
-
     <script>
-        async function structurePrompt() {
+        function structurePrompt() {
             const input = document.getElementById('promptInput').value.trim();
             const button = document.getElementById('structureBtn');
             const outputSection = document.getElementById('outputSection');
             const outputContent = document.getElementById('outputContent');
+            const copyBtn = document.getElementById('copyBtn');
 
             if (!input) {
                 alert('Please enter a prompt to structure.');
                 return;
             }
 
-            // Show loading state
             button.disabled = true;
             button.textContent = 'Processing...';
             outputSection.classList.add('show');
@@ -345,65 +205,243 @@
                     <span>Restructuring your prompt...</span>
                 </div>
             `;
+            copyBtn.style.display = "none";
 
-            // Simulate processing time
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Generate structured prompt
-            const structuredPrompt = generateStructuredPrompt(input);
-            
-            // Show result
-            outputContent.textContent = structuredPrompt;
-            button.disabled = false;
-            button.textContent = 'Structure Prompt';
+            setTimeout(() => {
+                const structuredPrompt = generateUniqueStructuredPrompt(input);
+                outputContent.textContent = structuredPrompt;
+                button.disabled = false;
+                button.textContent = 'Structure Prompt';
+                copyBtn.style.display = "inline-block";
+            }, 700);
         }
 
-        function generateStructuredPrompt(input) {
-            let structured = "";
-            
-            if (!input.toLowerCase().includes('context') && !input.toLowerCase().includes('role')) {
-                structured += "**Context & Role:**\n";
-                structured += "You are an expert assistant designed to provide comprehensive and accurate responses.\n\n";
-            }
-
-            structured += "**Task:**\n";
-            
-            let cleanedInput = input.replace(/\s+/g, ' ').trim();
-            let sentences = cleanedInput.split(/[.!?]+/).filter(s => s.trim().length > 0);
-            
-            if (sentences.length > 1) {
-                structured += sentences.map(s => s.trim()).join('. ') + '.';
-            } else {
-                structured += cleanedInput;
-            }
-            
-            structured += "\n\n";
-            
-            if (!input.toLowerCase().includes('requirement') && !input.toLowerCase().includes('format')) {
-                structured += "**Requirements:**\n";
-                structured += "- Provide clear, well-reasoned responses\n";
-                structured += "- Use examples where appropriate\n";
-                structured += "- Maintain professional tone\n\n";
-            }
-            
-            structured += "**Output Format:**\n";
-            structured += "Present your response in a clear, organized manner with proper headings and structure as needed.";
-            
-            return structured;
+        function copyPromptToClipboard() {
+            const outputContent = document.getElementById('outputContent');
+            const copyBtn = document.getElementById('copyBtn');
+            const text = outputContent.textContent;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.textContent = "Copied!";
+                copyBtn.disabled = true;
+                setTimeout(() => {
+                    copyBtn.textContent = "Copy";
+                    copyBtn.disabled = false;
+                }, 1100);
+            });
         }
 
-        // Auto-resize textarea
-        document.getElementById('promptInput').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.max(120, this.scrollHeight) + 'px';
-        });
+        function generateUniqueStructuredPrompt(input) {
+            const p = input.trim();
+            const styles = [
+`[SYSTEM PROMPT]
+You are a highly capable AI assistant.
 
-        // Enter key handling
-        document.getElementById('promptInput').addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'Enter') {
-                structurePrompt();
-            }
-        });
+[USER TASK]
+${p}
+
+[INSTRUCTIONS]
+1. Restate the main objective and any implicit requirements.
+2. If anything is unclear, list precise clarification questions before answering.
+3. Provide a thorough, structured solution. Use sections with headers where appropriate.
+4. If the answer is complex, include a breakdown of steps, reasoning, or decision points.
+5. Offer at least one alternative approach or perspective, if possible.
+6. Conclude with a summary, actionable next steps, and—if relevant—key caveats or risks.
+
+[RESPONSE FORMAT SUGGESTION]
+- Objective summary
+- Clarifications (if any)
+- Solution (sections/steps)
+- Alternative(s)
+- Conclusion/Next steps
+- Caveats
+
+[PLEASE BEGIN YOUR RESPONSE BELOW]
+--------------------------------------------------`,
+
+`Context:
+${p}
+
+You are an expert assistant.
+
+Your output must follow this structure:
+1. **Goal Restatement:** Rewrite the user’s goal in your own words.
+2. **Assumption Disclosure:** List all key assumptions you make from the prompt.
+3. **Process Outline:** Describe an optimal approach (step-by-step).
+4. **Main Solution:** Provide the answer, using formatting (numbered steps, tables, code, etc.) as best suits the task.
+5. **Validation:** Explain how to check your answer or result.
+6. **Suggested Improvements or Edge Cases:** Include additional recommendations, pitfalls, or “corner cases” to consider.
+
+Respond using well-titled sections. If you require clarification, request them before “Main Solution.”`,
+
+`[AI TASK CHAIN]
+Prompt: ${p}
+
+1. **Intent Analysis:** What does the user really want?
+2. **Clarification Phase:** What needs verification or extra detail? List ALL ambiguity.
+3. **Reasoning Plan:** Devise a logical plan; note the rationale for your approach.
+4. **Structured Response:** Execute the plan, with clear sections, short paragraphs, lists, or code blocks as necessary.
+5. **Quality Assurance:** Briefly state how you ensured correctness and completeness.
+6. **Further Steps:** Suggest what the user should do next with this response.
+
+Format your answer with clear explanations and sub-headings for each phase.`,
+
+`TASK: ${p}
+
+ROLE: You are an AI with expert proficiency in your relevant field.
+
+[Your Instructions:]
+- Contextualize the request: rephrase and elaborate the main aim.
+- List out any missing, implicit, or vague details.
+- Plan your answer: explain in bullet points which steps or knowledge you will use (before answering).
+- Write the solution, with each step labeled and explained clearly.
+- Provide sample outputs, code, or visual aids if appropriate.
+- State possible limitations, uncertainties, or considerations for the user.
+- Sign off with a concise summary or recommended reading.
+
+FORMAT:
+— Context
+— Missing/unclear details
+— Plan/structure
+— [Solution]
+— Limitations/considerations
+— Summary/Recommendations`,
+
+`PROMPT:
+${p}
+
+Your workflow:
+1. **Rephrase User Need:** Re-express what result the user expects.
+2. **Constraints/Requirements:** Identify any hard constraints or must-have requirements.
+3. **Approach Selection:** State why you choose your main approach to solve this.
+4. **Stepwise Execution:** For each step, explain what and why, then do it.
+5. **Demonstrate Output** (with example, code, or table).
+6. **Review:** Highlight uncertainties or areas for further user input.
+7. **Final Advice:** Suggest next action, or if output is to be used in other systems, explain how.
+
+Each major bullet should be a titled section.`,
+
+`[AI STRUCTURED RESPONSE TEMPLATE]
+User Input: ${p}
+
+— Section 1: **Objective & Scope**  
+Briefly summarize the user's goal and any boundaries or exclusions.
+
+— Section 2: **Points Needing Clarification**  
+List questions for the user if anything is unclear.
+
+— Section 3: **Process Plan**  
+Map out a detailed strategy or method for addressing the task, with reasoning.
+
+— Section 4: **Solution**  
+Provide the main output, using tables/steps/code blocks/diagrams or whatever is most effective.
+
+— Section 5: **Verification/Evaluation**  
+Suggest how to check if the result meets the goal or is optimal.
+
+— Section 6: **Advice/Next Steps**  
+Any follow-up actions, tips, or pointers.`,
+
+`INSTRUCTION:
+1. Interpret the prompt below.
+2. Define the core problem and any desired output format.
+3. Break your workflow into high-level stages (e.g., Analyze, Plan, Implement, Review).
+4. For each stage, provide specific actions, rationale, and expected results.
+5. Compile everything into a full report, with sample output where appropriate.
+6. Note any ambiguous points, risks, or edge cases.
+
+USER PROMPT: ${p}`,
+
+`TASK: ${p}
+
+You are a world-class AI.
+
+Your output should follow:
+— “Intent”  
+Restate the real target and any high-level context, using your own words.
+
+— “Assumptions”  
+Declare assumed facts or missing parameters.
+
+— “Solution Steps”  
+List each step in solving/executing, each with a label, short explanation, and, if relevant, a worked example (code, calculation, table, etc.)
+
+— “Critical Review”  
+(Could any errors occur? Is user input sufficient? Are further details required?)
+
+— “Recommended Reading/Resources”  
+Suggest further documentation, tools, or tutorials for deeper learning, if relevant.`,
+
+`${p}
+
+---
+Instructions for structured response:
+- Provide a sectioned answer:
+    1. Request Restatement
+    2. Clarification Needed (if any)
+    3. Detailed Plan/Framework (how to approach, steps, with explanations)
+    4. Main Output (apply the plan, structured as best fit)
+    5. Validation/Evaluation: how to rate or verify the output.
+    6. Recommendations: improvements, extensions, follow-ups.
+- Use labeled sections and concise prose. Tables/diagrams/code blocks as appropriate.
+---`,
+
+`SYSTEM: You are a technical problem-solving agent.
+USER PROMPT: ${p}
+
+1. Interpret and summarize the problem.
+2. Identify what information is missing or unclear.
+3. List relevant constraints or requirements.
+4. Generate a solution following a logical progression (from simplest to most complex if options exist).
+5. Annotate each phase with explanatory notes or rationale.
+6. Provide user with final checklist for next steps or troubleshooting.
+
+Output format:
+— Summary
+— Clarification Needed
+— Solution Steps (with notes)
+— Final Checklist`,
+
+`[AI CHAIN-OF-THOUGHT RESPONSE]
+Prompt: ${p}
+
+Follow this chain:
+- Restate the request and goal in 2 lines.
+- List any missing pieces or clarifications needed for completeness.
+- Plan the answer (what info is needed, what steps to take, what output format is optimal?).
+- Solve, labeling each substep, and justify your choices.
+- End by suggesting how to extend, validate, or stress-test the answer.`,
+
+`[ADVANCED AI SYSTEM PROMPT]
+User asks: "${p}"
+
+Please respond by:
+1. Outlining the objective and context.
+2. Raising any key questions that would clarify the request.
+3. Devising a multi-step plan/algorithm with commentary for each part.
+4. Executing the solution as appropriate (code, narrative, chart, etc.)
+5. Providing checks/tests to ensure answer validity.
+6. Offering recommended next actions, cautionary notes, or optimizations the user should consider.
+
+Make sure each section is clearly marked.`,
+
+`PROMPT: ${p}
+
+DETAILED INSTRUCTIONS:
+- Briefly echo the user's core question/objective.
+- Specify missing details/clarifications that could improve the outcome.
+- Describe the overall approach and logic behind your solution.
+- List explicit steps or actions with rationale for each.
+- Present the full answer with formatting (bullets, tables, code) as appropriate.
+- Advise on further action, validation, or risks at the end.
+
+Structure each section with clear headers.`
+            ];
+
+            // Pick a random style every time
+            const idx = Math.floor(Math.random() * styles.length);
+            return styles[idx];
+        }
     </script>
 </body>
 </html>
