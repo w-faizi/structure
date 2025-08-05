@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Structurer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0;
+            color: #ffffff;
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #2a2a2a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-links {
+            display: none;
+        }
+
+        .twitter-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .twitter-link:hover {
+            color: #1da1f2;
+            border-color: rgba(29, 161, 242, 0.3);
+            background: rgba(29, 161, 242, 0.1);
+        }
+
+        .twitter-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            padding-top: 5rem; /* Account for fixed header */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            line-height: 1.5;
+            resize: vertical;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            min-width: 140px;
+            backdrop-filter: blur(10px);
+        }
+
+        button:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: rgba(255, 255, 255, 0.3);
+            color: rgba(0, 0, 0, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .output-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .output-section.show {
+            display: block;
+        }
+
+        .output-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 1rem;
+            min-height: 120px;
+            font-size: 15px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .logo {
+                font-size: 18px;
+                gap: 0.5rem;
+            }
+            
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+            
+            .twitter-link {
+                font-size: 13px;
+                padding: 0.375rem 0.5rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+            
+            .container {
+                gap: 1.25rem;
+            }
+            
+            textarea {
+                min-height: 100px;
+                padding: 0.875rem;
+                font-size: 15px;
+            }
+            
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <svg class="logo-svg" viewBox="0 0 24 24" fill="none">
+                    <!-- Circular arrangement of dots -->
+                    <circle cx="12" cy="3" r="1.5" fill="white"/>
+                    <circle cx="16.5" cy="4.5" r="1.5" fill="white"/>
+                    <circle cx="19.5" cy="7.5" r="1.5" fill="white"/>
+                    <circle cx="21" cy="12" r="1.5" fill="white"/>
+                    <circle cx="19.5" cy="16.5" r="1.5" fill="white"/>
+                    <circle cx="16.5" cy="19.5" r="1.5" fill="white"/>
+                    <circle cx="12" cy="21" r="1.5" fill="white"/>
+                    <circle cx="7.5" cy="19.5" r="1.5" fill="white"/>
+                    <circle cx="4.5" cy="16.5" r="1.5" fill="white"/>
+                    <circle cx="3" cy="12" r="1.5" fill="white"/>
+                    <circle cx="4.5" cy="7.5" r="1.5" fill="white"/>
+                    <circle cx="7.5" cy="4.5" r="1.5" fill="white"/>
+                </svg>
+            </div>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+        <div class="input-section">
+            <div class="input-wrapper">
+                <textarea 
+                    id="promptInput" 
+                    placeholder="Paste your prompt here"
+                    spellcheck="false"
+                ></textarea>
+            </div>
+            <div class="button-wrapper">
+                <button id="structureBtn" onclick="structurePrompt()">
+                    Structure Prompt
+                </button>
+            </div>
+        </div>
+
+        <div class="output-section" id="outputSection">
+            <div class="output-wrapper" id="outputContent"></div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        async function structurePrompt() {
+            const input = document.getElementById('promptInput').value.trim();
+            const button = document.getElementById('structureBtn');
+            const outputSection = document.getElementById('outputSection');
+            const outputContent = document.getElementById('outputContent');
+
+            if (!input) {
+                alert('Please enter a prompt to structure.');
+                return;
+            }
+
+            // Show loading state
+            button.disabled = true;
+            button.textContent = 'Processing...';
+            outputSection.classList.add('show');
+            outputContent.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>Restructuring your prompt...</span>
+                </div>
+            `;
+
+            // Simulate processing time
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Generate structured prompt
+            const structuredPrompt = generateStructuredPrompt(input);
+            
+            // Show result
+            outputContent.textContent = structuredPrompt;
+            button.disabled = false;
+            button.textContent = 'Structure Prompt';
+        }
+
+        function generateStructuredPrompt(input) {
+            let structured = "";
+            
+            if (!input.toLowerCase().includes('context') && !input.toLowerCase().includes('role')) {
+                structured += "**Context & Role:**\n";
+                structured += "You are an expert assistant designed to provide comprehensive and accurate responses.\n\n";
+            }
+
+            structured += "**Task:**\n";
+            
+            let cleanedInput = input.replace(/\s+/g, ' ').trim();
+            let sentences = cleanedInput.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            
+            if (sentences.length > 1) {
+                structured += sentences.map(s => s.trim()).join('. ') + '.';
+            } else {
+                structured += cleanedInput;
+            }
+            
+            structured += "\n\n";
+            
+            if (!input.toLowerCase().includes('requirement') && !input.toLowerCase().includes('format')) {
+                structured += "**Requirements:**\n";
+                structured += "- Provide clear, well-reasoned responses\n";
+                structured += "- Use examples where appropriate\n";
+                structured += "- Maintain professional tone\n\n";
+            }
+            
+            structured += "**Output Format:**\n";
+            structured += "Present your response in a clear, organized manner with proper headings and structure as needed.";
+            
+            return structured;
+        }
+
+        // Auto-resize textarea
+        document.getElementById('promptInput').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(120, this.scrollHeight) + 'px';
+        });
+
+        // Enter key handling
+        document.getElementById('promptInput').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                structurePrompt();
+            }
+        });
+    </script>
+</body>
+</html>
